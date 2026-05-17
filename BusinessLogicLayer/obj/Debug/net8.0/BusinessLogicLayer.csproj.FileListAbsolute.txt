@@ -1,0 +1,15 @@
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.csproj.AssemblyReference.cache
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.GeneratedMSBuildEditorConfig.editorconfig
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.AssemblyInfoInputs.cache
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.AssemblyInfo.cs
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.csproj.CoreCompileInputs.cache
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/bin/Debug/net8.0/BusinessLogicLayer.deps.json
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/bin/Debug/net8.0/BusinessLogicLayer.dll
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/bin/Debug/net8.0/BusinessLogicLayer.pdb
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/bin/Debug/net8.0/DataAccessLayer.dll
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/bin/Debug/net8.0/DataAccessLayer.pdb
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/Business.450209FB.Up2Date
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.dll
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/refint/BusinessLogicLayer.dll
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.pdb
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/ref/BusinessLogicLayer.dll
