@@ -18,7 +18,11 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGODB_HOST": "localhost",
-        "MONGODB_PORT": "27017"
+        "MONGODB_PORT": "27017",
+        "UsersMicroserviceName": "localhost",
+        "UsersMicroservicePort": "9090",
+        "ProductsMicroserviceName": "localhost",
+        "ProductsMicroservicePort": "8080"
       }
     },
     "https": {
@@ -30,7 +34,11 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGODB_HOST": "localhost",
-        "MONGODB_PORT": "27017"
+        "MONGODB_PORT": "27017",
+        "UsersMicroserviceName": "localhost",
+        "UsersMicroservicePort": "9090",
+        "ProductsMicroserviceName": "localhost",
+        "ProductsMicroservicePort": "8080"
       }
     },
     "IIS Express": {
@@ -40,7 +48,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "MONGODB_HOST": "localhost",
-        "MONGODB_PORT": "27017"
+        "MONGODB_PORT": "27017",
+        "UsersMicroserviceName": "localhost",
+        "UsersMicroservicePort": "9090"
       }
     }
   }

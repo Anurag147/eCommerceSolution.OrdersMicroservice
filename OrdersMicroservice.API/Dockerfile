@@ -43,5 +43,9 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_URLS=http://+:8080
 ENV MONGODB_HOST=localhost
 ENV MONGODB_PORT=27017
+ENV UsersMicroserviceName=localhost
+ENV UsersMicroservicePort=9090
+ENV ProductsMicroserviceName=localhost
+ENV ProductsMicroservicePort=8080
 
 ENTRYPOINT ["dotnet", "OrdersMicroservice.API.dll"]

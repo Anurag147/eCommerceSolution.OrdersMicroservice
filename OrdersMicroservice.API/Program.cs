@@ -4,6 +4,8 @@ using eCommerce.OrdersMicroService.BusinessLogicLayer;
 using eCommerce.OrdersMicroService.DataAccessLayer;
 using FluentValidation.AspNetCore;
 using AutoMapper;
+using eCommerce.OrdersMicroService.BusinessLogicLayer.HttpClients;
+using eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,16 +30,21 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddHttpClient<UsersMicroserviceClient>(client => {
+  client.BaseAddress = new Uri($"http://{builder.Configuration["UsersMicroserviceName"]}:{builder.Configuration["UsersMicroservicePort"]}");
+});
+
+
+builder.Services.AddHttpClient<ProductsMicroserviceClient>(client => {
+  client.BaseAddress = new Uri($"http://{builder.Configuration["ProductsMicroserviceName"]}:{builder.Configuration["ProductsMicroservicePort"]}");
+}); 
+
 var app = builder.Build();
 app.UseExceptionHandlingMiddleware();
 app.UseCors();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseSwagger();
+app.UseSwaggerUI();
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
