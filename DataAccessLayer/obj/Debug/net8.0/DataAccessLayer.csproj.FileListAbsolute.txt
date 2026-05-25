@@ -10,3 +10,4 @@
 /Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/DataAccessLayer/obj/Debug/net8.0/refint/DataAccessLayer.dll
 /Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.pdb
 /Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/DataAccessLayer/obj/Debug/net8.0/ref/DataAccessLayer.dll
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/DataAccessLayer/obj/Debug/net8.0/DataAccessLayer.sourcelink.json

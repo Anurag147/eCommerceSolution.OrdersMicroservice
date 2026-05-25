@@ -13,3 +13,4 @@
 /Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/refint/BusinessLogicLayer.dll
 /Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.pdb
 /Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/ref/BusinessLogicLayer.dll
+/Users/anurag147/Desktop/Study/Microservices/eCommerce.OrdersMicroService/BusinessLogicLayer/obj/Debug/net8.0/BusinessLogicLayer.sourcelink.json
