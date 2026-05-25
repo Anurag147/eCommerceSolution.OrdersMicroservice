@@ -17,6 +17,10 @@ public class ProductsMicroservicePolicies : IProductsMicroservicePolicies
     {
         _logger = logger;
     }
+    /// <summary>
+    /// This fallback policy will be triggered when the HTTP request to the Products microservice fails (i.e., returns a non-success status code). When the fallback is triggered, it will log a warning message and return a dummy ProductDTO object with default values. This allows the Orders microservice to continue functioning even when the Products microservice is down or experiencing issues, providing a graceful degradation of service instead of a complete failure. The dummy product can be used by the Orders microservice to indicate that product details are temporarily unavailable, while still allowing order processing to continue.
+    /// </summary>
+    /// <returns></returns>
     public IAsyncPolicy<HttpResponseMessage> GetFallbackPolicy()
     {
         AsyncFallbackPolicy<HttpResponseMessage> policy = Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
@@ -42,5 +46,14 @@ public class ProductsMicroservicePolicies : IProductsMicroservicePolicies
         return policy;
     }
 
-
+    public IAsyncPolicy<HttpResponseMessage> GetBulkheadPolicy()
+    {
+         return Policy.BulkheadAsync<HttpResponseMessage>(
+            maxParallelization: 3, // Maximum number of concurrent executions
+            maxQueuingActions: 40, // Maximum number of actions that can be queued when the bulkhead is full
+            onBulkheadRejectedAsync: context =>
+            {                _logger.LogWarning("Bulkhead rejected execution: Too many concurrent requests to Products microservice.");
+                return Task.CompletedTask;
+            });
+    }
 }

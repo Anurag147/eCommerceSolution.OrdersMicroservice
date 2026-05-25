@@ -6,4 +6,5 @@ public interface IProductsMicroservicePolicies
 {
     // Define any policies related to the Products microservice here
     IAsyncPolicy<HttpResponseMessage> GetFallbackPolicy();
+    IAsyncPolicy<HttpResponseMessage> GetBulkheadPolicy();
 }

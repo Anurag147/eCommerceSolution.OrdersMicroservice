@@ -40,12 +40,14 @@ builder.Services.AddHttpClient<UsersMicroserviceClient>(client => {
     client.BaseAddress = new Uri($"http://{builder.Configuration["UsersMicroserviceName"]}:{builder.Configuration["UsersMicroservicePort"]}");
 })
 .AddPolicyHandler((sp, request) => sp.GetRequiredService<IUsersMicroservicePolicies>().GetRetryPolicy())//adding retry policy to users microservice http client
-.AddPolicyHandler((sp, request) => sp.GetRequiredService<IUsersMicroservicePolicies>().GetCircuitBreakerPolicy());//adding circuit breaker policy to users microservice http client
+.AddPolicyHandler((sp, request) => sp.GetRequiredService<IUsersMicroservicePolicies>().GetCircuitBreakerPolicy())//adding circuit breaker policy to users microservice http client
+.AddPolicyHandler((sp, request) => sp.GetRequiredService<IUsersMicroservicePolicies>().GetTimeoutPolicy());//adding timeout policy to users microservice http client
 
 builder.Services.AddHttpClient<ProductsMicroserviceClient>(client => {
   client.BaseAddress = new Uri($"http://{builder.Configuration["ProductsMicroserviceName"]}:{builder.Configuration["ProductsMicroservicePort"]}");
 })
-.AddPolicyHandler((sp, request) => sp.GetRequiredService<IProductsMicroservicePolicies>().GetFallbackPolicy());//adding fallback policy to products microservice http client return empty product details when products microservice is down or returns failure response
+.AddPolicyHandler((sp, request) => sp.GetRequiredService<IProductsMicroservicePolicies>().GetFallbackPolicy())//adding fallback policy to products microservice http client return empty product details when products microservice is down or returns failure response
+.AddPolicyHandler((sp, request) => sp.GetRequiredService<IProductsMicroservicePolicies>().GetBulkheadPolicy());//adding bulkhead policy to products microservice http client to limit concurrent requests and prevent cascading failures when products microservice is under heavy load
 
 var app = builder.Build();
 app.UseExceptionHandlingMiddleware();
