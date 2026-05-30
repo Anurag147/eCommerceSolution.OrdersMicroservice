@@ -59,13 +59,21 @@
               "target": "Package",
               "version": "[12.1.1, )"
             },
+            "Microsoft.Extensions.Caching.StackExchangeRedis": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[10.0.7, )"
+              "version": "[10.0.8, )"
             },
             "Polly": {
               "target": "Package",
               "version": "[8.6.6, )"
+            },
+            "StackExchange.Redis": {
+              "target": "Package",
+              "version": "[2.13.17, )"
             }
           },
           "imports": [
