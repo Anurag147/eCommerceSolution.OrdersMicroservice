@@ -173,7 +173,7 @@
     },
     "RateLimitOptions": {
       "ClientIdHeader": "Oc-Client",
-      "Limit": 5,
+      "Limit": 500,
       "Period": "1m",
       "Wait": "30s"
     }
