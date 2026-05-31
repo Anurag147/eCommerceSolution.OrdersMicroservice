@@ -165,6 +165,17 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:4000"
+    "BaseUrl": "http://localhost:4000",
+    "QosOptions": {
+      "MinimumThroughput": 5,
+      "BreakDuration": 5000,
+      "Timeout": 2000
+    },
+    "RateLimitOptions": {
+      "ClientIdHeader": "Oc-Client",
+      "Limit": 5,
+      "Period": "1m",
+      "Wait": "30s"
+    }
   }
 }

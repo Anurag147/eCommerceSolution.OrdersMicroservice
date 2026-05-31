@@ -17,7 +17,13 @@ public class UsersMicroserviceClient
     {
         try
         {
-            var response = await _httpClient.GetAsync($"/gateway/users/{userId}");
+            var request = new HttpRequestMessage(
+    HttpMethod.Get,
+    $"/gateway/users/{userId}");
+
+            request.Headers.Add("Oc-Client", "orders-microservice");
+
+            var response = await _httpClient.SendAsync(request);
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound || response.StatusCode == System.Net.HttpStatusCode.NoContent)

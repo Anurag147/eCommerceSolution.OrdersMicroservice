@@ -36,8 +36,14 @@ public class ProductsMicroserviceClient
 
     _logger.LogInformation("Cache MISS for key {CacheKey}", cacheKey);
 
+    var request = new HttpRequestMessage(
+    HttpMethod.Get,
+    $"/gateway/products/search/product-id/{productID}");
+
+    request.Headers.Add("Oc-Client", "orders-microservice");
+
     HttpResponseMessage response =
-        await _httpClient.GetAsync($"/gateway/products/search/product-id/{productID}");
+        await _httpClient.SendAsync(request);
 
     _logger.LogInformation(
         "Product API returned status code {StatusCode} for ProductId {ProductId}",
