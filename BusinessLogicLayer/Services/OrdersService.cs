@@ -2,6 +2,7 @@ using AutoMapper;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.DTO;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.HttpClients;
 using eCommerce.OrdersMicroservice.BusinessLogicLayer.ServiceContracts;
+using eCommerce.OrdersMicroService.BusinessLogicLayer.DTO;
 using eCommerce.OrdersMicroService.BusinessLogicLayer.HttpClients;
 using eCommerce.OrdersMicroService.DataAccessLayer.Entities;
 using eCommerce.OrdersMicroService.DataAccessLayer.RepositoryContracts;
@@ -58,87 +59,87 @@ public class OrdersService : IOrdersService
             throw new ValidationException($"User with ID {orderAddRequest.UserID} does not exist.");
         }
 
-       foreach (var orderItem in orderAddRequest.OrderItems)
-{
-    try
-    {
-        var orderItemValidationResult =
-            await _orderItemAddRequestValidator.ValidateAsync(orderItem);
+        foreach (var orderItem in orderAddRequest.OrderItems)
+        {
+            try
+            {
+                var orderItemValidationResult =
+                    await _orderItemAddRequestValidator.ValidateAsync(orderItem);
 
-        // Check if the product exists in the Products Microservice
-        var product =
-            await _productsMicroserviceClient
-                .GetProductByProductID(orderItem.ProductID);
+                // Check if the product exists in the Products Microservice
+                var product =
+                    await _productsMicroserviceClient
+                        .GetProductByProductID(orderItem.ProductID);
 
                 Console.WriteLine(
     $"Checked product with ID {orderItem.ProductID} in Products Microservice. " +
     $"{(product != null ? "Product exists." : "Product does not exist.")}");
 
-if (product != null)
-{
-    Console.WriteLine("Product Details:");
-    Console.WriteLine($"ProductID: {product.ProductID}");
-    Console.WriteLine($"ProductName: {product.ProductName}");
-    Console.WriteLine($"Category: {product.Category}");
-    Console.WriteLine($"UnitPrice: {product.UnitPrice}");
-    Console.WriteLine($"QuantityInStock: {product.QuantityInStock}");
-}
-        if (product == null)
-        {
-            throw new ValidationException(
-                $"Product with ID {orderItem.ProductID} does not exist.");
-        }
+                if (product != null)
+                {
+                    Console.WriteLine("Product Details:");
+                    Console.WriteLine($"ProductID: {product.ProductID}");
+                    Console.WriteLine($"ProductName: {product.ProductName}");
+                    Console.WriteLine($"Category: {product.Category}");
+                    Console.WriteLine($"UnitPrice: {product.UnitPrice}");
+                    Console.WriteLine($"QuantityInStock: {product.QuantityInStock}");
+                }
+                if (product == null)
+                {
+                    throw new ValidationException(
+                        $"Product with ID {orderItem.ProductID} does not exist.");
+                }
 
-        if (!orderItemValidationResult.IsValid)
-        {
-            throw new ValidationException(
-                orderItemValidationResult.Errors);
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("Exception occurred while processing order item");
-        Console.WriteLine($"Message: {ex.Message}");
-        Console.WriteLine($"StackTrace: {ex.StackTrace}");
+                if (!orderItemValidationResult.IsValid)
+                {
+                    throw new ValidationException(
+                        orderItemValidationResult.Errors);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception occurred while processing order item");
+                Console.WriteLine($"Message: {ex.Message}");
+                Console.WriteLine($"StackTrace: {ex.StackTrace}");
 
-        if (ex.InnerException != null)
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(
+                        $"Inner Exception: {ex.InnerException.Message}");
+
+                    Console.WriteLine(
+                        $"Inner StackTrace: {ex.InnerException.StackTrace}");
+                }
+            }
+        }
+        var orderInput = _mapper.Map<Order>(orderAddRequest);
+
+        decimal totalBill = 0;
+
+        foreach (var orderItem in orderInput.OrderItems)
         {
+            orderItem.TotalPrice =
+                decimal.Round(
+                    orderItem.Quantity * orderItem.UnitPrice,
+                    2,
+                    MidpointRounding.AwayFromZero);
+
+            totalBill += orderItem.TotalPrice;
+
             Console.WriteLine(
-                $"Inner Exception: {ex.InnerException.Message}");
-
-            Console.WriteLine(
-                $"Inner StackTrace: {ex.InnerException.StackTrace}");
+                $"OrderItem => ProductID: {orderItem.ProductID}, " +
+                $"Quantity: {orderItem.Quantity}, " +
+                $"UnitPrice: {orderItem.UnitPrice}, " +
+                $"TotalPrice: {orderItem.TotalPrice}");
         }
-    }
-}
-       var orderInput = _mapper.Map<Order>(orderAddRequest);
 
-decimal totalBill = 0;
+        orderInput.TotalBill =
+            decimal.Round(
+                totalBill,
+                2,
+                MidpointRounding.AwayFromZero);
 
-foreach (var orderItem in orderInput.OrderItems)
-{
-    orderItem.TotalPrice =
-        decimal.Round(
-            orderItem.Quantity * orderItem.UnitPrice,
-            2,
-            MidpointRounding.AwayFromZero);
-
-    totalBill += orderItem.TotalPrice;
-
-    Console.WriteLine(
-        $"OrderItem => ProductID: {orderItem.ProductID}, " +
-        $"Quantity: {orderItem.Quantity}, " +
-        $"UnitPrice: {orderItem.UnitPrice}, " +
-        $"TotalPrice: {orderItem.TotalPrice}");
-}
-
-orderInput.TotalBill =
-    decimal.Round(
-        totalBill,
-        2,
-        MidpointRounding.AwayFromZero);
-
-Console.WriteLine($"Final TotalBill: {orderInput.TotalBill}");
+        Console.WriteLine($"Final TotalBill: {orderInput.TotalBill}");
 
         Order? addedOrder = await _ordersRepository.AddOrder(orderInput);
         if (addedOrder == null)
@@ -171,10 +172,37 @@ Console.WriteLine($"Final TotalBill: {orderInput.TotalBill}");
     {
         Order? order = await _ordersRepository.GetOrderByCondition(filter);
         if (order == null)
-        {
             return null;
+
+        OrderResponse orderResponse = _mapper.Map<OrderResponse>(order);
+
+
+        //TO DO: Load ProductName and Category in OrderItem
+        if (orderResponse != null)
+        {
+            foreach (OrderItemResponse orderItemResponse in orderResponse.OrderItems)
+            {
+                ProductDTO? productDTO = await _productsMicroserviceClient.GetProductByProductID(orderItemResponse.ProductID);
+
+                if (productDTO == null)
+                    continue;
+
+                _mapper.Map<ProductDTO, OrderItemResponse>(productDTO, orderItemResponse);
+            }
         }
-        return _mapper.Map<OrderResponse>(order);
+
+
+        //TO DO: Load UserPersonName and Email from Users Microservice
+        if (orderResponse != null)
+        {
+            UserDTO? user = await _usersMicroserviceClient.GetUserByIdAsync(orderResponse.UserID);
+            if (user != null)
+            {
+                _mapper.Map<UserDTO, OrderResponse>(user, orderResponse);
+            }
+        }
+
+        return orderResponse;
     }
 
     /// <summary>
@@ -216,8 +244,9 @@ Console.WriteLine($"Final TotalBill: {orderInput.TotalBill}");
     /// <returns></returns>
     public async Task<List<OrderResponse?>> GetOrdersByCondition(FilterDefinition<Order> filter)
     {
-        var orders = await _ordersRepository.GetOrdersByCondition(filter);
-        List<OrderResponse?> orderResponses = _mapper.Map<List<OrderResponse?>>(orders);
+        IEnumerable<Order?> orders = await _ordersRepository.GetOrdersByCondition(filter);
+        IEnumerable<OrderResponse?> orderResponses = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+        //TO DO: Load ProductName and Category in each OrderItem
         foreach (OrderResponse? orderResponse in orderResponses)
         {
             if (orderResponse == null)
@@ -233,6 +262,14 @@ Console.WriteLine($"Final TotalBill: {orderInput.TotalBill}");
                     continue;
 
                 _mapper.Map<ProductDTO, OrderItemResponse>(productDTO, orderItemResponse);
+            }
+
+
+            //TO DO: Load UserPersonName and Email from Users Microservice
+            UserDTO? user = await _usersMicroserviceClient.GetUserByIdAsync(orderResponse.UserID);
+            if (user != null)
+            {
+                _mapper.Map<UserDTO, OrderResponse>(user, orderResponse);
             }
         }
 

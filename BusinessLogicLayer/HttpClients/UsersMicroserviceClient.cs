@@ -17,7 +17,7 @@ public class UsersMicroserviceClient
     {
         try
         {
-            var response = await _httpClient.GetAsync($"/api/users/{userId}");
+            var response = await _httpClient.GetAsync($"/gateway/users/{userId}");
             if (response.IsSuccessStatusCode)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound || response.StatusCode == System.Net.HttpStatusCode.NoContent)
