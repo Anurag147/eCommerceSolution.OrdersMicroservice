@@ -67,9 +67,17 @@
               "target": "Package",
               "version": "[10.0.8, )"
             },
+            "Microsoft.Extensions.Hosting": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
             "Polly": {
               "target": "Package",
               "version": "[8.6.6, )"
+            },
+            "RabbitMQ.Client": {
+              "target": "Package",
+              "version": "[7.2.1, )"
             },
             "StackExchange.Redis": {
               "target": "Package",
